@@ -96,11 +96,11 @@ class AuthController extends Controller
 
         if (Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
             //Find same user in db, kill the previous session and save current session id
-            $user = User::where('email', $request->get('email'))->first(); 
-            if($user->session_id != null){ 
-                Session::getHandler()->destroy($user->session_id); 
-            }; 
-            $user->session_id = Session::getId(); 
+            $user = User::where('email', $request->get('email'))->first();
+            if(!is_null($user->session_id)) {
+                Session::getHandler()->destroy($user->session_id);
+            }
+            $user->session_id = Session::getId();
             $user->save();
             return $this->handleUserWasAuthenticated($request, $throttles);
         }

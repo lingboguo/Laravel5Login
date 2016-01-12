@@ -13,7 +13,12 @@ class ExampleTest extends TestCase
      */
     public function testBasicExample()
     {
-        $this->visit('/')
-             ->see('Laravel 5');
+        $this->visit('http://laratest.app/register')
+            ->type('Lingbo', 'name')
+            ->type('lguo@greenedu.com', 'email')
+            ->type('123123', 'password')
+            ->type('123123', 'password_confirmation')
+            ->press('Register')
+            ->seePageIs('http://laratest.app/home');
     }
 }
