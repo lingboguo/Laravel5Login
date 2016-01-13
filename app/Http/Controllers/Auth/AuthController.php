@@ -116,4 +116,14 @@ class AuthController extends Controller
 
         return $this->sendFailedLoginResponse($request);
     }
+
+    public function logout()
+    {
+        //Set session_id to null when logout
+        $user = User::where('email', Auth::user()->email)->first();
+        Auth::guard($this->getGuard())->logout();
+        $user->session_id = null;
+        $user->save();
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
+    }
 }
